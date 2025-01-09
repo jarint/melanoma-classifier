@@ -5,4 +5,4 @@ import numpy as np
 
 
 #
-img_size = 5000
+img_size = 50
