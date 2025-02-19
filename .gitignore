@@ -1,1 +1,3 @@
 melanoma_cancer_dataset/
+*.npy
+*.pth
