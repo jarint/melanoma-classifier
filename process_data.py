@@ -59,7 +59,7 @@ for filename in os.listdir(benign_testing_loc):
         img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) # grayscale
         img = cv2.resize(img, (img_size, img_size))
         img_array = np.array(img)
-        benign_testing_loc.append([img_array, np.array([1,0])]) # one-hot vector 1,0 = benign 
+        benign_testing_data.append([img_array, np.array([1,0])]) # one-hot vector 1,0 = benign 
     
     except:
         pass # do nothing
@@ -72,8 +72,31 @@ for filename in os.listdir(malignant_testing_loc):
         img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) # grayscale
         img = cv2.resize(img, (img_size, img_size))
         img_array = np.array(img)
-        malignant_testing_loc.append([img_array, np.array([0,1])]) # one-hot vector 0,1 = malignant 
+        malignant_testing_data.append([img_array, np.array([0,1])]) # one-hot vector 0,1 = malignant 
     
     except:
         pass # do nothing
 
+# checking lengths
+#print(len(benign_testing_data))
+#print(len(malignant_testing_data))
+#print(len(benign_training_data))
+#print(len(malignant_training_data))
+
+# make unequal data same length
+benign_training_data = benign_training_data[0:len(malignant_training_data)]
+
+print(len(benign_testing_data))
+print(len(malignant_testing_data))
+print(len(benign_training_data))
+print(len(malignant_training_data))
+
+
+# merge and mix data randomly (both training and testing)
+training_data = benign_training_data + malignant_training_data
+np.random.shuffle(training_data)
+np.save("melanoma_training_data.npy", np.array(training_data, dtype=object))
+
+testing_data = benign_testing_data + malignant_testing_data
+np.random.shuffle(testing_data)
+np.save("melanoma_testing_data.npy", np.array(testing_data, dtype=object))
